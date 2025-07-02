@@ -9,6 +9,7 @@
 *.so.*
 *.dll
 *.dylib
+*.idx
 
 # Qt-es
 object_script.*.Release
@@ -16,6 +17,8 @@ object_script.*.Debug
 *_plugin_import.cpp
 /.qmake.cache
 /.qmake.stash
+.qtc_clangd/
+build/
 *.pro.user
 *.pro.user.*
 *.qbs.user
