@@ -39,94 +39,60 @@ int main(int argc, char * argv[])
 
     //add above Qlineedit to layout
 
-    QVBoxLayout *layoutForQLineEdit = new QVBoxLayout(&mainWindow);
+    QVBoxLayout *mainVerticalLayout = new QVBoxLayout(&mainWindow);
+    mainVerticalLayout->addWidget(pQLineEdit,0,Qt::AlignTop);
 
+    QString buttonTitleArray[16] = {
 
+                                    "7","8","9","/",
 
-    // define push buttons
+                                    "4","5","6","x",
 
-    QPushButton *buttonForNumber1 = new QPushButton("1");
-    QPushButton *buttonForNumber2 = new QPushButton("2");
-    QPushButton *buttonForNumber3 = new QPushButton("3");
-    QPushButton *buttonForNumber4 = new QPushButton("4");
-    QPushButton *buttonForNumber5 = new QPushButton("5");
-    QPushButton *buttonForNumber6 = new QPushButton("6");
-    QPushButton *buttonForNumber7 = new QPushButton("7");
-    QPushButton *buttonForNumber8 = new QPushButton("8");
-    QPushButton *buttonForNumber9 = new QPushButton("9");
-    QPushButton *buttonForNumber0 = new QPushButton("0");
-    QPushButton *buttonForLetterC = new QPushButton("C");
-    QPushButton *buttonForEqualitySymbol = new QPushButton("=");
-    QPushButton *buttonForAdditionSymbol = new QPushButton("+");
-    QPushButton *buttonForSubstractionSymbol = new QPushButton("-");
-    QPushButton *buttonForMultiplicationSymbol = new QPushButton("x");
-    QPushButton *buttonForDivisionSymbol = new QPushButton("/");
+                                    "1","2","3","-",
 
-    // add push buttons to QGridLayout
+                                    "0","C","=","+"
+
+                                    };
+
+    QPushButton *calculatorPushButtonsArray[16];
+
+    //define layout for calculator push buttons
 
     QGridLayout *buttonGridLayout = new QGridLayout();
 
-    // row 3
+    // initialize 16 QPushButtons, add them to the button grid layout
 
-    buttonGridLayout->addWidget(buttonForNumber0,3,0);
-    buttonForNumber0->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    int i = 0;
 
-    buttonGridLayout->addWidget(buttonForLetterC,3,1);
-    buttonForLetterC->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    for (int rowNumber = 0; rowNumber < 4; rowNumber++)
+    {
+        for(int columnNumber = 0; columnNumber < 4; columnNumber++)
+        {
+            calculatorPushButtonsArray[i] = new QPushButton(buttonTitleArray[i]);
+            calculatorPushButtonsArray[i]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            buttonGridLayout->addWidget(calculatorPushButtonsArray[i],rowNumber, columnNumber);
+            calculatorPushButtonsArray[i]->setStyleSheet(
+                "QPushButton {"
+                "  background-color: white;"      // normal state
+                "  border: 1px solid #ccc;"
+                "  font-size: 18px;"
+                "}"
+                "QPushButton:hover {"
+                "  background-color: lightblue;"  // hover state
+                "}"
+                "QPushButton:pressed {"
+                "  background-color: lightblue;"
+                "  border: 1px solid #2196F3;"  // optional: to show press feedback
+                "  color: black;"               // prevent color fade
+                "}"
+                );
 
-    buttonGridLayout->addWidget(buttonForEqualitySymbol,3,2);
-    buttonForEqualitySymbol->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            i++;
 
-    buttonGridLayout->addWidget(buttonForAdditionSymbol,3,3);
-    buttonForAdditionSymbol->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        }
+    }
 
-
-    //row 2
-
-    buttonGridLayout->addWidget(buttonForNumber1,2,0);
-    buttonForNumber1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    buttonGridLayout->addWidget(buttonForNumber2,2,1);
-    buttonForNumber2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    buttonGridLayout->addWidget(buttonForNumber3,2,2);
-    buttonForNumber3->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    buttonGridLayout->addWidget(buttonForSubstractionSymbol,2,3);
-    buttonForSubstractionSymbol->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    // row 1
-
-    buttonGridLayout->addWidget(buttonForNumber4,1,0);
-    buttonForNumber4->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    buttonGridLayout->addWidget(buttonForNumber5,1,1);
-    buttonForNumber5->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    buttonGridLayout->addWidget(buttonForNumber6,1,2);
-    buttonForNumber6->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    buttonGridLayout->addWidget(buttonForMultiplicationSymbol,1,3);
-    buttonForMultiplicationSymbol->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-
-    //row 0
-
-    buttonGridLayout->addWidget(buttonForNumber7,0,0);
-    buttonForNumber7->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    buttonGridLayout->addWidget(buttonForNumber8,0,1);
-    buttonForNumber8->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-
-    buttonGridLayout->addWidget(buttonForNumber9,0,2);
-    buttonForNumber9->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    buttonGridLayout->addWidget(buttonForDivisionSymbol,0,3);
-    buttonForDivisionSymbol->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    layoutForQLineEdit->addWidget(pQLineEdit,0,Qt::AlignTop);
-    layoutForQLineEdit->addLayout(buttonGridLayout,1);
+    mainVerticalLayout->addLayout(buttonGridLayout,1);
 
     mainWindow.show();                        //  show the window
 
