@@ -4,6 +4,7 @@
 #include<QPushButton>
 #include<QGridLayout>
 #include<QLineEdit>
+#include"mybutton.h"
 
 int main(int argc, char * argv[])
 {
@@ -68,7 +69,7 @@ int main(int argc, char * argv[])
     {
         for(int columnNumber = 0; columnNumber < 4; columnNumber++)
         {
-            calculatorPushButtonsArray[i] = new QPushButton(buttonTitleArray[i]);
+            calculatorPushButtonsArray[i] = new MyButton(buttonTitleArray[i]);
             calculatorPushButtonsArray[i]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
             buttonGridLayout->addWidget(calculatorPushButtonsArray[i],rowNumber, columnNumber);
             calculatorPushButtonsArray[i]->setStyleSheet(
