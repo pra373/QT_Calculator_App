@@ -4,7 +4,9 @@
 #include<QPushButton>
 #include<QGridLayout>
 #include<QLineEdit>
+#include<QLabel>
 #include"mybutton.h"
+#include"myLineEdit.h"
 
 int main(int argc, char * argv[])
 {
@@ -13,6 +15,8 @@ int main(int argc, char * argv[])
     // do other preparations which are required to set up a window in Win32 SDK
 
     QApplication calculator(argc,argv);
+
+    calculator.setStyle("Fusion");
 
     //creates a blank top level window as no parent is specified
 
@@ -27,21 +31,29 @@ int main(int argc, char * argv[])
 
     mainWindow.setWindowIcon(appIcon);        // set window icon
 
+    // add QLable to the window
+
+    QLabel *pMiniDisplay = new QLabel();
+    pMiniDisplay->setMinimumHeight(30);
+    pMiniDisplay->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    pMiniDisplay->setStyleSheet("font-size: 16px; color: white; padding: 5px");
+    pMiniDisplay->setText("Mini Display Test"); // Start with empty mini-display
 
 
     // Add QlineEdit in the window
 
-    QLineEdit *pQLineEdit = new QLineEdit();
-    pQLineEdit->setMinimumHeight(70);
-    pQLineEdit->setAlignment(Qt::AlignRight);
-    pQLineEdit->setReadOnly(true);
-    pQLineEdit->setText("0");
-    pQLineEdit->setStyleSheet("font-size: 33px; padding: 5px");
+    MyLineEdit *pMyLineEdit = new MyLineEdit();
+    pMyLineEdit->setMinimumHeight(70);
+    pMyLineEdit->setAlignment(Qt::AlignRight);
+    pMyLineEdit->setReadOnly(true);
+    pMyLineEdit->setText("0");
+    pMyLineEdit->setStyleSheet("font-size: 33px; padding: 5px");
 
     //add above Qlineedit to layout
 
     QVBoxLayout *mainVerticalLayout = new QVBoxLayout(&mainWindow);
-    mainVerticalLayout->addWidget(pQLineEdit,0,Qt::AlignTop);
+    mainVerticalLayout->addWidget(pMiniDisplay,0,Qt::AlignTop);
+    mainVerticalLayout->addWidget(pMyLineEdit,0,Qt::AlignVCenter);
 
     QString buttonTitleArray[16] = {
 
@@ -55,7 +67,7 @@ int main(int argc, char * argv[])
 
                                     };
 
-    QPushButton *calculatorPushButtonsArray[16];
+    MyButton *calculatorPushButtonsArray[16];
 
     //define layout for calculator push buttons
 
@@ -72,23 +84,15 @@ int main(int argc, char * argv[])
             calculatorPushButtonsArray[i] = new MyButton(buttonTitleArray[i]);
             calculatorPushButtonsArray[i]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
             buttonGridLayout->addWidget(calculatorPushButtonsArray[i],rowNumber, columnNumber);
-            calculatorPushButtonsArray[i]->setStyleSheet(
-                "QPushButton {"
-                "  background-color: white;"      // normal state
-                "  border: 1px solid #ccc;"
-                "  font-size: 18px;"
-                "}"
-                "QPushButton:hover {"
-                "  background-color: lightblue;"  // hover state
-                "}"
-                "QPushButton:pressed {"
-                "  background-color: lightblue;"
-                "  border: 1px solid #2196F3;"  // optional: to show press feedback
-                "  color: black;"               // prevent color fade
-                "}"
-                );
+
+
+            // connect custome button signal to QLineEdit Slot
+            QObject::connect(calculatorPushButtonsArray[i], SIGNAL(ButtonClicked(const QString &)),
+                             pMyLineEdit, SLOT(handleButtonClicked(const QString &)));
+
 
             i++;
+
 
         }
     }

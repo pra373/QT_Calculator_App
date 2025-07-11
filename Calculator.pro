@@ -1,6 +1,7 @@
 QT += widgets
 SOURCES += \
     main.cpp \
+    myLineEdit.cpp \
     mybutton.cpp
 
 RESOURCES += \
@@ -9,4 +10,5 @@ RESOURCES += \
 RC_FILE = myicon.rc
 
 HEADERS += \
+    myLineEdit.h \
     mybutton.h
