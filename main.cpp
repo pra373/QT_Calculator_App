@@ -7,6 +7,7 @@
 #include<QLabel>
 #include"mybutton.h"
 #include"myLineEdit.h"
+#include"myLabel.h"
 
 int main(int argc, char * argv[])
 {
@@ -33,16 +34,16 @@ int main(int argc, char * argv[])
 
     // add QLable to the window
 
-    QLabel *pMiniDisplay = new QLabel();
+    myLabel *pMiniDisplay = new myLabel();
     pMiniDisplay->setMinimumHeight(30);
     pMiniDisplay->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     pMiniDisplay->setStyleSheet("font-size: 16px; color: white; padding: 5px");
-    pMiniDisplay->setText("Mini Display Test"); // Start with empty mini-display
+    pMiniDisplay->setText("0"); // Start with empty mini-display
 
 
     // Add QlineEdit in the window
 
-    MyLineEdit *pMyLineEdit = new MyLineEdit();
+    MyLineEdit *pMyLineEdit = new MyLineEdit(pMiniDisplay);
     pMyLineEdit->setMinimumHeight(70);
     pMyLineEdit->setAlignment(Qt::AlignRight);
     pMyLineEdit->setReadOnly(true);
@@ -90,6 +91,10 @@ int main(int argc, char * argv[])
             QObject::connect(calculatorPushButtonsArray[i], SIGNAL(ButtonClicked(const QString &)),
                              pMyLineEdit, SLOT(handleButtonClicked(const QString &)));
 
+
+            // connect custome button signal to myLabel
+
+            //QObject::connect(calculatorPushButtonsArray[i],SIGNAL(ButtonClicked(const QString &)),pMiniDisplay,SLOT(appendText(const QString &)));
 
             i++;
 
