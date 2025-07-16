@@ -8,7 +8,7 @@ class MyButton : public QPushButton
     Q_OBJECT
 
 public:
-    MyButton(QString &buttonLabel, QWidget *parent = nullptr);
+    MyButton(const QString &buttonLabel, QWidget *parent = nullptr);
 
 signals:
     void ButtonClicked(const QString &buttonText);

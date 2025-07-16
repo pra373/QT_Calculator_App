@@ -9,14 +9,14 @@ class MyLineEdit : public QLineEdit
     Q_OBJECT
 
 private:
-    myLabel * label;
+    MyLabel * label;
     QString firstOperator;
     QString secondOperator;
     QString operatorSymbol;
-    bool waitingForSecondNumber;
+
 
 public:
-    MyLineEdit(myLabel * myLabel = nullptr, QWidget *parent = nullptr);
+    MyLineEdit(MyLabel * myLabel = nullptr, QWidget *parent = nullptr);
 
 public slots:
     void handleButtonClicked(const QString &buttonText);

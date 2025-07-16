@@ -7,7 +7,7 @@
 #include<QLabel>
 #include"mybutton.h"
 #include"myLineEdit.h"
-#include"myLabel.h"
+#include"mylabel.h"
 
 int main(int argc, char * argv[])
 {
@@ -34,7 +34,7 @@ int main(int argc, char * argv[])
 
     // add QLable to the window
 
-    myLabel *pMiniDisplay = new myLabel();
+    MyLabel *pMiniDisplay = new MyLabel();
     pMiniDisplay->setMinimumHeight(30);
     pMiniDisplay->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     pMiniDisplay->setStyleSheet("font-size: 16px; color: white; padding: 5px");

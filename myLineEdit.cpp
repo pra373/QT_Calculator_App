@@ -2,7 +2,12 @@
 #include "mylabel.h"
 #include <iostream>
 
-MyLineEdit::MyLineEdit(myLabel * myLebel, QWidget *parent) : QLineEdit(parent)
+bool divideByZeroError = false;
+bool waitingForSecondNumber;
+bool resultIsShown;
+bool chainingExpressionAfterResult ;
+
+MyLineEdit::MyLineEdit(MyLabel * myLebel, QWidget *parent) : QLineEdit(parent)
 {
     label = myLebel;
 }
@@ -17,6 +22,7 @@ void MyLineEdit::handleButtonClicked(const QString &buttonText)
     {
         this->setText("0");
         label->setText("0");
+        divideByZeroError = false;
         return;
     }
 
@@ -24,29 +30,54 @@ void MyLineEdit::handleButtonClicked(const QString &buttonText)
 
     // below if else is written to handle the case when initial 0 is present in QLineEdit and we need to reset that 0 and start with new number
 
-    if( buttonText == "0" || buttonText == "1" || buttonText == "2" || buttonText == "3" || buttonText == "4" || buttonText == "5" || buttonText == "6" || buttonText == "7" || buttonText == "8" || buttonText == "9")
+    if( divideByZeroError == false && (buttonText == "0" || buttonText == "1" || buttonText == "2" || buttonText == "3" || buttonText == "4" || buttonText == "5" || buttonText == "6" || buttonText == "7" || buttonText == "8" || buttonText == "9"))
     {
-        if(currentDisplayedText == "0" || waitingForSecondNumber)
+        if(currentDisplayedText == "0" || waitingForSecondNumber || resultIsShown)
         {
             this->setText(buttonText);
+
             waitingForSecondNumber = false;
+
+            if(resultIsShown == true)
+            {
+                resultIsShown = false;
+                label->setText("0");
+            }
+            else if(chainingExpressionAfterResult)
+            {
+                // continuing from result
+                chainingExpressionAfterResult = false;
+                // don't clear label
+            }
+
+
         }
         else
         {
-            std::cout << "Inside MyLineEdit slot: handleButtonClicked" << std::endl;
+            std::cout << "Inside MyLineEdit slot: handleButtonClicked else part" << std::endl;
             this->insert(buttonText);
         }
     }
 
-    if(buttonText == "+" || buttonText == "-" || buttonText == "x" || buttonText == "/")
+    if(divideByZeroError == false && (buttonText == "+" || buttonText == "-" || buttonText == "x" || buttonText == "/"))
     {
+        std::cout<<"Inside operator pressed if check"<<std::endl;
         firstOperator = currentDisplayedText;
         operatorSymbol = buttonText;
-        label->setText(firstOperator + " " + buttonText + " ");
+
+        if(resultIsShown)
+        {
+            resultIsShown = false;
+            chainingExpressionAfterResult  = true;
+        }
+
+        label->setText(firstOperator + " " + operatorSymbol + " ");
         waitingForSecondNumber = true;
+
+
     }
 
-    if(buttonText == "=")
+    if(divideByZeroError == false && buttonText == "=")
     {
         secondOperator = this->text();
 
@@ -71,7 +102,8 @@ void MyLineEdit::handleButtonClicked(const QString &buttonText)
             if(num2 == 0)
             {
                 this->setText("Error");
-                label->setText("Divide by 0");
+                label->setText("Cannot divide by 0");
+                divideByZeroError = true;
                 return;
             }
             result = num1/num2;
@@ -80,12 +112,8 @@ void MyLineEdit::handleButtonClicked(const QString &buttonText)
         QString resultToString = QString::number(result);
 
         this->setText(resultToString);
-        label->setText(firstOperator + " " + operatorSymbol + " " + secondOperator + "=");
-
-
-        // allow chaining
-
-        firstOperator = resultToString;
+        label->setText(firstOperator + " " + operatorSymbol + " " + secondOperator + " " + "=");
+        resultIsShown = true;
 
     }
 

@@ -1,9 +1,9 @@
 QT += widgets
 SOURCES += \
     main.cpp \
-    myLabel.cpp \
     myLineEdit.cpp \
-    mybutton.cpp
+    mybutton.cpp \
+    mylabel.cpp
 
 RESOURCES += \
     resources.qrc
@@ -11,6 +11,6 @@ RESOURCES += \
 RC_FILE = myicon.rc
 
 HEADERS += \
-    myLabel.h \
     myLineEdit.h \
-    mybutton.h
+    mybutton.h \
+    mylabel.h

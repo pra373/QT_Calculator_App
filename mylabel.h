@@ -4,15 +4,11 @@
 #include <QObject>
 #include <QLabel>
 
-
-class myLabel : public QLabel
+class MyLabel : public QLabel
 {
     Q_OBJECT
 public:
-    myLabel(QWidget *parent = nullptr);
-
-public slots:
-    void appendText(const QString &buttonText);
+    MyLabel(QWidget *parent = nullptr);
 };
 
 #endif // MYLABEL_H
