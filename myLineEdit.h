@@ -10,8 +10,8 @@ class MyLineEdit : public QLineEdit
 
 private:
     MyLabel * label;
-    QString firstOperator;
-    QString secondOperator;
+    QString firstNumber;
+    QString secondNumber;
     QString operatorSymbol;
 
 

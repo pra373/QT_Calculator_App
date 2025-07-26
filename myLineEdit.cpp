@@ -1,11 +1,15 @@
 #include "mylineedit.h"
 #include "mylabel.h"
 #include <iostream>
+#define maxDigitLimit 14
 
 bool divideByZeroError = false;
 bool waitingForSecondNumber;
 bool resultIsShown;
 bool chainingExpressionAfterResult ;
+bool isFirstNumberConversionValid;
+bool isSecondNumberConversionValid;
+short countOfDigits = 0;
 
 MyLineEdit::MyLineEdit(MyLabel * myLebel, QWidget *parent) : QLineEdit(parent)
 {
@@ -32,37 +36,44 @@ void MyLineEdit::handleButtonClicked(const QString &buttonText)
 
     if( divideByZeroError == false && (buttonText == "0" || buttonText == "1" || buttonText == "2" || buttonText == "3" || buttonText == "4" || buttonText == "5" || buttonText == "6" || buttonText == "7" || buttonText == "8" || buttonText == "9"))
     {
-        if(currentDisplayedText == "0" || waitingForSecondNumber || resultIsShown)
+
+
+        if(countOfDigits < maxDigitLimit)
         {
-            this->setText(buttonText);
-
-            waitingForSecondNumber = false;
-
-            if(resultIsShown == true)
+            if(currentDisplayedText == "0" || waitingForSecondNumber || resultIsShown)
             {
-                resultIsShown = false;
-                label->setText("0");
+                this->setText(buttonText);
+                countOfDigits = 1;
+
+                waitingForSecondNumber = false;
+
+                if(resultIsShown == true)
+                {
+                    resultIsShown = false;
+                    label->setText("0");
+                }
+                else if(chainingExpressionAfterResult)
+                {
+                    chainingExpressionAfterResult = false;
+                }
+
+
             }
-            else if(chainingExpressionAfterResult)
+            else
             {
-                // continuing from result
-                chainingExpressionAfterResult = false;
-                // don't clear label
+                std::cout << "Inside MyLineEdit slot: handleButtonClicked else part" << std::endl;
+                this->insert(buttonText);
+                countOfDigits++;
+                std::cout<<countOfDigits<<std::endl;
             }
-
-
         }
-        else
-        {
-            std::cout << "Inside MyLineEdit slot: handleButtonClicked else part" << std::endl;
-            this->insert(buttonText);
-        }
+
     }
 
     if(divideByZeroError == false && (buttonText == "+" || buttonText == "-" || buttonText == "x" || buttonText == "/"))
     {
         std::cout<<"Inside operator pressed if check"<<std::endl;
-        firstOperator = currentDisplayedText;
+        firstNumber = currentDisplayedText;
         operatorSymbol = buttonText;
 
         if(resultIsShown)
@@ -71,19 +82,28 @@ void MyLineEdit::handleButtonClicked(const QString &buttonText)
             chainingExpressionAfterResult  = true;
         }
 
-        label->setText(firstOperator + " " + operatorSymbol + " ");
+        label->setText(firstNumber + " " + operatorSymbol + " ");
         waitingForSecondNumber = true;
+        countOfDigits = 0;
+
 
 
     }
 
     if(divideByZeroError == false && buttonText == "=")
     {
-        secondOperator = this->text();
+        secondNumber = this->text();
 
-        double num1 = firstOperator.toDouble();
-        double num2 = secondOperator.toDouble();
+        double num1 = firstNumber.toDouble(&isFirstNumberConversionValid);
+        double num2 = secondNumber.toDouble(&isSecondNumberConversionValid);
         double result = 0;
+
+        if(!isFirstNumberConversionValid || !isSecondNumberConversionValid)
+        {
+            this->setText("Number out of bound error");
+            label->setText("Error");
+            return;
+        }
 
         if(operatorSymbol == "+")
         {
@@ -112,7 +132,7 @@ void MyLineEdit::handleButtonClicked(const QString &buttonText)
         QString resultToString = QString::number(result);
 
         this->setText(resultToString);
-        label->setText(firstOperator + " " + operatorSymbol + " " + secondOperator + " " + "=");
+        label->setText(firstNumber + " " + operatorSymbol + " " + secondNumber + " " + "=");
         resultIsShown = true;
 
     }
